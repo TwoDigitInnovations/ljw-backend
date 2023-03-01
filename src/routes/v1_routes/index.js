@@ -210,6 +210,7 @@ router.post("/getAllClients", clientController.getAllClients);
 router.post("/addJobs", jobsController.addJobs);
 router.post("/getJobByClent", jobsController.getAllJos);
 router.post("/getJobById", jobsController.getJobById);
+router.post("/updateJob", jobsController.updateJob);
 
 //workers routes
 router.post("/addWorkers", workersController.addWorkers);

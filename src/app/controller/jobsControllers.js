@@ -47,4 +47,13 @@ module.exports = {
     });
     return response.ok(res, job);
   },
+
+  updateJob: async (req, res) => {
+    const payload = req.body;
+    const job = await Jobs.findByIdAndUpdate(payload.job_id, payload, {
+      new: true,
+      upsert: true,
+    });
+    return response.ok(res, job);
+  },
 };
