@@ -104,4 +104,10 @@ module.exports = {
       message: "Job worker deleted successfully!",
     });
   },
+
+  deleteWorkerById: async (req, res) => {
+    const payload = req.body;
+    await Workers.findByIdAndRemove(payload._id);
+    return response.ok(res, { message: "Client deleted successfully!" });
+  },
 };

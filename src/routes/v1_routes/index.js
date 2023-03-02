@@ -205,12 +205,18 @@ router.post("/jobs/getAllSeries", job.getAllSeries);
 // client routes
 router.post("/addClients", clientController.addClints);
 router.post("/getAllClients", clientController.getAllClients);
+router.post("/getClientById", clientController.getClientById);
+router.post("/deleteClient", clientController.deleteClient);
+router.post("/updateClient", clientController.updateClient);
 
 //jobs routes
 router.post("/addJobs", jobsController.addJobs);
 router.post("/getJobByClent", jobsController.getAllJos);
 router.post("/getJobById", jobsController.getJobById);
 router.post("/updateJob", jobsController.updateJob);
+router.post("/addreport", jobsController.addreport);
+router.post("/deleteReport", jobsController.deleteReport);
+router.post("/getClientJobByStatus", jobsController.getClientJobByStatus);
 
 //workers routes
 router.post("/addWorkers", workersController.addWorkers);
@@ -218,5 +224,6 @@ router.post("/getAllWorkers", workersController.getAllWorkers);
 router.post("/getJobByworker", workersController.getJobByworker);
 router.post("/updateJobWorkers", workersController.updateJobWorkers);
 router.post("/deleteWorker", workersController.deleteWorker);
+router.post("/deleteWorkerById", workersController.deleteWorkerById);
 
 module.exports = router;

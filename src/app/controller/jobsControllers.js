@@ -56,4 +56,40 @@ module.exports = {
     });
     return response.ok(res, job);
   },
+
+  addreport: async (req, res) => {
+    const payload = req.body;
+    const job = await Jobs.findByIdAndUpdate(
+      payload.job_id,
+      { $push: { report: payload } },
+      { new: true, upsert: true }
+    );
+    return response.created(res, job);
+  },
+
+  deleteReport: async (req, res) => {
+    const payload = req.body;
+    console.log(payload);
+    const query = { _id: payload.job_id };
+    await Jobs.updateOne(
+      query,
+      { $pull: { report: { _id: payload._id } } },
+      { new: true, upsert: true }
+    );
+    return response.created(res, {
+      message: "Job report deleted successfully!",
+    });
+  },
+
+  getClientJobByStatus: async (req, res) => {
+    const payload = req.body;
+
+    const job = await Jobs.find({
+      user_id: payload.user_id,
+      client_id: payload.client_id,
+      status: payload.status,
+    });
+
+    return response.ok(res, job);
+  },
 };

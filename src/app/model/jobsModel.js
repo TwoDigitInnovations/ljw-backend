@@ -62,6 +62,17 @@ const JobsSchema = new Schema(
         },
       },
     ],
+
+    report: [
+      {
+        title: {
+          type: "String",
+        },
+        desc: {
+          type: "String",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
