@@ -216,5 +216,6 @@ router.post("/updateJob", jobsController.updateJob);
 router.post("/addWorkers", workersController.addWorkers);
 router.post("/getAllWorkers", workersController.getAllWorkers);
 router.post("/getJobByworker", workersController.getJobByworker);
+router.post("/updateJobWorkers", workersController.updateJobWorkers);
 
 module.exports = router;

@@ -71,4 +71,23 @@ module.exports = {
     });
     return response.ok(res, job);
   },
+  updateJobWorkers: async (req, res) => {
+    const payload = req.body;
+    const query = { _id: payload.job_id, "workers._id": payload._id };
+    const updateDocument = {
+      $set: {
+        "workers.$.size": payload.fullName,
+        "workers.$.color": payload.color,
+        "workers.$.pcs": payload.pcs,
+        "workers.$.rate": payload.rate,
+        "workers.$.worker_id": payload.worker_id,
+      },
+    };
+
+    const job = await Jobs.updateOne(query, updateDocument, {
+      new: true,
+      upsert: true,
+    });
+    return response.ok(res, { message: "Job worker updated successfully!" });
+  },
 };
