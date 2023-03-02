@@ -90,4 +90,18 @@ module.exports = {
     });
     return response.ok(res, { message: "Job worker updated successfully!" });
   },
+
+  deleteWorker: async (req, res) => {
+    const payload = req.body;
+    console.log(payload);
+    const query = { _id: payload.job_id };
+    await Jobs.updateOne(
+      query,
+      { $pull: { workers: { _id: payload.id } } },
+      { new: true, upsert: true }
+    );
+    return response.created(res, {
+      message: "Job worker deleted successfully!",
+    });
+  },
 };
