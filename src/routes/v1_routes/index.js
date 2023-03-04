@@ -217,6 +217,9 @@ router.post("/updateJob", jobsController.updateJob);
 router.post("/addreport", jobsController.addreport);
 router.post("/deleteReport", jobsController.deleteReport);
 router.post("/getClientJobByStatus", jobsController.getClientJobByStatus);
+router.post("/getClientJobBymonth", jobsController.getClientJobBymonth);
+router.post("/getWorkerJobByStatus", jobsController.getWorkerJobByStatus);
+router.post("/getWorkerJobBymonth", jobsController.getWorkerJobBymonth);
 
 //workers routes
 router.post("/addWorkers", workersController.addWorkers);

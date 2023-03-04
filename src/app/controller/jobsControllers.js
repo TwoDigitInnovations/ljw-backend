@@ -81,6 +81,54 @@ module.exports = {
     });
   },
 
+  getWorkerJobByStatus: async (req, res) => {
+    const payload = req.body;
+    const job = await Jobs.find({
+      status: payload.status,
+      workers: { $elemMatch: { worker_id: payload.worker_id } },
+    });
+    return response.ok(res, job);
+  },
+
+  getWorkerJobBymonth: async (req, res) => {
+    const payload = req.body;
+    let startOfCurrentMonth = new Date();
+    let startOfNextMonth = new Date();
+    let job = [];
+
+    if (payload.type === "all") {
+      job = await Jobs.find({
+        workers: { $elemMatch: { worker_id: payload.worker_id } },
+        status: "Complete",
+      });
+    } else {
+      if (payload.type === "current") {
+        startOfCurrentMonth.setDate(1);
+        startOfNextMonth.setDate(1);
+        startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
+      }
+
+      if (payload.type === "last") {
+        startOfCurrentMonth.setDate(1);
+        startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfNextMonth.setDate(1);
+      }
+
+      console.log(startOfCurrentMonth, startOfNextMonth);
+
+      job = await Jobs.find({
+        workers: { $elemMatch: { worker_id: payload.worker_id } },
+        status: "Complete",
+        updatedAt: {
+          $gte: startOfCurrentMonth,
+          $lt: startOfNextMonth,
+        },
+      });
+    }
+
+    return response.ok(res, job);
+  },
+
   getClientJobByStatus: async (req, res) => {
     const payload = req.body;
 
@@ -89,6 +137,45 @@ module.exports = {
       client_id: payload.client_id,
       status: payload.status,
     });
+
+    return response.ok(res, job);
+  },
+
+  getClientJobBymonth: async (req, res) => {
+    const payload = req.body;
+    let startOfCurrentMonth = new Date();
+    let startOfNextMonth = new Date();
+    let job = [];
+
+    if (payload.type === "all") {
+      job = await Jobs.find({
+        client_id: payload.client_id,
+        status: "Complete",
+      });
+    } else {
+      if (payload.type === "current") {
+        startOfCurrentMonth.setDate(1);
+        startOfNextMonth.setDate(1);
+        startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
+      }
+
+      if (payload.type === "last") {
+        startOfCurrentMonth.setDate(1);
+        startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfNextMonth.setDate(1);
+      }
+
+      console.log(startOfCurrentMonth, startOfNextMonth);
+
+      job = await Jobs.find({
+        client_id: payload.client_id,
+        status: "Complete",
+        updatedAt: {
+          $gte: startOfCurrentMonth,
+          $lt: startOfNextMonth,
+        },
+      });
+    }
 
     return response.ok(res, job);
   },
