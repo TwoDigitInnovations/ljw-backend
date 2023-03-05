@@ -111,7 +111,7 @@ router.post(
 router.get("/me", isAuthenticated(["USER", "PROVIDER"]), user.me);
 router.post(
   "/profile/update",
-  isAuthenticated(["USER", "PROVIDER", "ADMIN"]),
+
   user.updateUser
 );
 
