@@ -154,6 +154,7 @@ router.post(
 // );
 
 router.post("/getProfile", user.getProfile);
+router.post("/updateProfile", user.updateProfile);
 
 //Surya's code
 //test commeit

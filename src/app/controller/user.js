@@ -372,4 +372,17 @@ module.exports = {
       return response.error(res, error);
     }
   },
+  updateProfile: async (req, res) => {
+    const payload = req.body;
+    delete req.body.password;
+    try {
+      const u = await User.findByIdAndUpdate(payload.id, payload, {
+        new: true,
+        upsert: true,
+      });
+      return response.ok(res, u);
+    } catch (error) {
+      return response.error(res, error);
+    }
+  },
 };
