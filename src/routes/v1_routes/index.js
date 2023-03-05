@@ -154,6 +154,8 @@ router.post(
   user.guardListSearch
 );
 
+router.post("/getProfile", user.getProfile);
+
 //Surya's code
 //test commeit
 

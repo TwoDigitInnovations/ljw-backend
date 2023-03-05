@@ -362,4 +362,14 @@ module.exports = {
       return response.error(res, error);
     }
   },
+
+  getProfile: async (req, res) => {
+    const payload = req.body;
+    try {
+      const u = await User.findById(payload.user_id);
+      return response.ok(res, u);
+    } catch (error) {
+      return response.error(res, error);
+    }
+  },
 };
