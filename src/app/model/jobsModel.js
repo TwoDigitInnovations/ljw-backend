@@ -21,6 +21,9 @@ const JobsSchema = new Schema(
     price: {
       type: "string",
     },
+    Jobcompletedate: {
+      type: Date,
+    },
     billno: {
       type: "string",
     },

@@ -17,6 +17,7 @@ module.exports = {
       pctype: payload.pctype,
       client_id: payload.client_id,
       user_id: payload.user_id,
+      Jobcompletedate: payload.Jobcompletedate,
     });
 
     await job.save();
@@ -119,7 +120,7 @@ module.exports = {
       job = await Jobs.find({
         workers: { $elemMatch: { worker_id: payload.worker_id } },
         status: "Complete",
-        updatedAt: {
+        Jobcompletedate: {
           $gte: startOfCurrentMonth,
           $lt: startOfNextMonth,
         },
@@ -170,7 +171,7 @@ module.exports = {
       job = await Jobs.find({
         client_id: payload.client_id,
         status: "Complete",
-        updatedAt: {
+        Jobcompletedate: {
           $gte: startOfCurrentMonth,
           $lt: startOfNextMonth,
         },
