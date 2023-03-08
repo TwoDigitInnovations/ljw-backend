@@ -218,11 +218,12 @@ module.exports = {
     }
     let formattedJobs = {
       client: {},
-      mainamount: 0,
       workers: {},
-      total: 0,
     };
     let clients = [];
+    let workers = [];
+    let grandClientTotal = 0;
+    let grandWorkerTotal = 0;
     job.map((j) => {
       if (formattedJobs.client[j.client_id.firm]) {
         formattedJobs.client[j.client_id.firm] =
@@ -247,10 +248,27 @@ module.exports = {
         formattedJobs.client[j.client_id.firm] = j.pcs * j.price;
       }
     });
+    for (const property in formattedJobs.client) {
+      grandClientTotal = grandClientTotal + formattedJobs.client[property];
+      clients.push({
+        name: property,
+        total: formattedJobs.client[property],
+      });
+    }
+
+    for (const property in formattedJobs.workers) {
+      grandWorkerTotal = grandWorkerTotal + formattedJobs.workers[property];
+      workers.push({
+        name: property,
+        total: formattedJobs.workers[property],
+      });
+    }
 
     return response.ok(res, {
-      Clients: formattedJobs.client,
-      workers: formattedJobs.workers,
+      clients,
+      workers,
+      grandClientTotal,
+      grandWorkerTotal,
     });
   },
 };
