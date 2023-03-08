@@ -222,6 +222,7 @@ router.post("/getClientJobByStatus", jobsController.getClientJobByStatus);
 router.post("/getClientJobBymonth", jobsController.getClientJobBymonth);
 router.post("/getWorkerJobByStatus", jobsController.getWorkerJobByStatus);
 router.post("/getWorkerJobBymonth", jobsController.getWorkerJobBymonth);
+router.post("/benifitAmount", jobsController.benifitAmount);
 
 //workers routes
 router.post("/addWorkers", workersController.addWorkers);

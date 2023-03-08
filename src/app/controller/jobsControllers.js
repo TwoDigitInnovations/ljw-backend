@@ -180,4 +180,77 @@ module.exports = {
 
     return response.ok(res, job);
   },
+
+  benifitAmount: async (req, res) => {
+    const payload = req.body;
+    let startOfCurrentMonth = new Date();
+    let startOfNextMonth = new Date();
+    let job = [];
+
+    if (payload.type === "all") {
+      job = await Jobs.find({
+        user_id: payload.user_id,
+        status: "Complete",
+      }).populate("client_id");
+    } else {
+      if (payload.type === "current") {
+        startOfCurrentMonth.setDate(1);
+        startOfNextMonth.setDate(1);
+        startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
+      }
+
+      if (payload.type === "last") {
+        startOfCurrentMonth.setDate(1);
+        startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfNextMonth.setDate(1);
+      }
+
+      console.log(startOfCurrentMonth, startOfNextMonth);
+
+      job = await Jobs.find({
+        user_id: payload.user_id,
+        status: "Complete",
+        Jobcompletedate: {
+          $gte: startOfCurrentMonth,
+          $lt: startOfNextMonth,
+        },
+      }).populate("client_id");
+    }
+    let formattedJobs = {
+      client: {},
+      mainamount: 0,
+      workers: {},
+      total: 0,
+    };
+    let clients = [];
+    job.map((j) => {
+      if (formattedJobs.client[j.client_id.firm]) {
+        formattedJobs.client[j.client_id.firm] =
+          formattedJobs.client[j.client_id.firm] + j.pcs * j.price;
+        j.workers.map((w) => {
+          if (formattedJobs.workers[w.fullName]) {
+            formattedJobs.workers[w.fullName] =
+              formattedJobs.workers[w.fullName] + w.pcs * w.rate;
+          } else {
+            formattedJobs.workers[w.fullName] = w.pcs * w.rate;
+          }
+        });
+      } else {
+        j.workers.map((w) => {
+          if (formattedJobs.workers[w.fullName]) {
+            formattedJobs.workers[w.fullName] =
+              formattedJobs.workers[w.fullName] + w.pcs * w.rate;
+          } else {
+            formattedJobs.workers[w.fullName] = w.pcs * w.rate;
+          }
+        });
+        formattedJobs.client[j.client_id.firm] = j.pcs * j.price;
+      }
+    });
+
+    return response.ok(res, {
+      Clients: formattedJobs.client,
+      workers: formattedJobs.workers,
+    });
+  },
 };
