@@ -26,18 +26,37 @@ module.exports = {
 
   getAllJos: async (req, res) => {
     const payload = req.body;
+    let startOfCurrentMonth = new Date();
+    let startOfNextMonth = new Date();
     let job = [];
-    if (payload.client_id) {
+
+    if (payload.type === "all") {
       job = await Jobs.find({
         user_id: payload.user_id,
-        client_id: payload.client_id,
       });
     } else {
+      if (payload.type === "current") {
+        startOfCurrentMonth.setDate(0);
+        startOfNextMonth.setDate(1);
+        startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
+      }
+
+      if (payload.type === "last") {
+        startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfCurrentMonth.setDate(0);
+        startOfNextMonth.setDate(1);
+      }
+
+      console.log(startOfCurrentMonth, startOfNextMonth);
+
       job = await Jobs.find({
         user_id: payload.user_id,
+        Jobcompletedate: {
+          $gte: startOfCurrentMonth,
+          $lt: startOfNextMonth,
+        },
       });
     }
-
     return response.ok(res, job);
   },
 
@@ -104,17 +123,16 @@ module.exports = {
       });
     } else {
       if (payload.type === "current") {
-        startOfCurrentMonth.setDate(1);
+        startOfCurrentMonth.setDate(0);
         startOfNextMonth.setDate(1);
         startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
       }
 
       if (payload.type === "last") {
-        startOfCurrentMonth.setDate(1);
         startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfCurrentMonth.setDate(0);
         startOfNextMonth.setDate(1);
       }
-
       console.log(startOfCurrentMonth, startOfNextMonth);
 
       job = await Jobs.find({
@@ -155,14 +173,14 @@ module.exports = {
       });
     } else {
       if (payload.type === "current") {
-        startOfCurrentMonth.setDate(1);
+        startOfCurrentMonth.setDate(0);
         startOfNextMonth.setDate(1);
         startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
       }
 
       if (payload.type === "last") {
-        startOfCurrentMonth.setDate(1);
         startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfCurrentMonth.setDate(0);
         startOfNextMonth.setDate(1);
       }
 
@@ -194,14 +212,14 @@ module.exports = {
       }).populate("client_id");
     } else {
       if (payload.type === "current") {
-        startOfCurrentMonth.setDate(1);
+        startOfCurrentMonth.setDate(0);
         startOfNextMonth.setDate(1);
         startOfNextMonth.setMonth(startOfNextMonth.getMonth() + 1);
       }
 
       if (payload.type === "last") {
-        startOfCurrentMonth.setDate(1);
         startOfCurrentMonth.setMonth(startOfNextMonth.getMonth() - 1);
+        startOfCurrentMonth.setDate(0);
         startOfNextMonth.setDate(1);
       }
 
